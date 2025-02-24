@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {dishesReducer} from "../Containers/Dishes/dishesSlice.ts";
+import { tasksReducer } from '../containers/Tasks/TasksSlice.ts';
 
 export const store = configureStore( {
     reducer: {
-        dishes: dishesReducer,
+        tasks: tasksReducer,
     },
 });
 
