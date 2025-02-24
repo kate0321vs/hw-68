@@ -1,6 +1,7 @@
 import axiosApi from '../../axiosApi.ts';
-import { Task, TasksListApi } from '../../types';
+import { Task, TaskApi, TasksListApi } from '../../types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 export const fetchTasks = createAsyncThunk(
   "tasks/fetch",
@@ -15,5 +16,16 @@ export const fetchTasks = createAsyncThunk(
       });
     }
     return newTasks
+  }
+)
+
+export const addTask = createAsyncThunk(
+  "tasks/onSubmit",
+  async (newTask: TaskApi) => {
+    const response = await axiosApi.post<Task>('/tasks.json', newTask);
+    console.log(response.data.name)
+    toast.success('Meal was added Successfully!');
+
+    return { ...newTask, id: response.data.name}
   }
 )

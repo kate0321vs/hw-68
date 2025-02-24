@@ -1,7 +1,8 @@
 export interface Task {
   title: string;
   status: boolean;
-  id: string;
+  id: string | undefined;
+  name?: string;
 }
 
 export interface TaskApi {
