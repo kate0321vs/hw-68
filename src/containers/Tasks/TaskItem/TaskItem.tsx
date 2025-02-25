@@ -3,9 +3,12 @@ import { Button, Card, CardContent, Checkbox, Grid, Typography } from '@mui/mate
 interface Props {
   title: string;
   status: boolean;
+  onChangeStatus: () => void;
+  statusLoader: boolean;
+  onDelete: () => void;
 }
 
-const TaskItem: React.FC<Props> = ({title, status}) => {
+const TaskItem: React.FC<Props> = ({title, status, onChangeStatus, onDelete}) => {
   return (
     <Card
       sx={{
@@ -18,12 +21,12 @@ const TaskItem: React.FC<Props> = ({title, status}) => {
         borderRadius: '10px',
       }}
     >
-      <Checkbox color="success" defaultChecked={false} />
+      <Checkbox color="success" checked={status} onChange={onChangeStatus}/>
       <CardContent sx={{flexGrow: 1}}>
            <Typography variant="body1" color="textSecondary">
              {title}
            </Typography>
-          <Typography variant="body2" color={status ? 'success' : 'warning'}>
+          <Typography variant="body2" color={status ? 'textSecondary' : 'textPrimary'}>
             {status ? 'done' : 'in progress'}
           </Typography>
       </CardContent>
@@ -32,7 +35,7 @@ const TaskItem: React.FC<Props> = ({title, status}) => {
         <Button
           size="small"
           color="error"
-          // onClick={}
+          onClick={onDelete}
           loadingPosition="start"
           variant="contained"
         >

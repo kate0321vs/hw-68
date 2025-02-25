@@ -29,3 +29,17 @@ export const addTask = createAsyncThunk(
     return { ...newTask, id: response.data.name}
   }
 )
+
+export const statusFetch = createAsyncThunk(
+  "tasks/statusFetch",
+  async (newTask: Task) => {
+      await axiosApi.put(`tasks/${newTask.id}.json`, {...newTask, status: !newTask.status})
+      return {...newTask, status: !newTask.status}
+  }
+)
+
+const deleteFetch = async (task: Task) => {
+  if (window.confirm("Are you sure you want to delete this dish?")) {
+    await axiosApi.delete(`dishes/${task.id}.json`);
+  }
+};
