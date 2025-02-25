@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../app/hook.ts';
 import { ReactNode, useEffect } from 'react';
-import { addTask, fetchTasks, statusFetch } from './TasksThunk.ts';
+import { addTask, deleteFetch, fetchTasks, statusFetch } from './TasksThunk.ts';
 import TaskItem from './TaskItem/TaskItem.tsx';
 import Spinner from '../../UI/Spinner/Spinner.tsx';
 import { Container, Typography } from '@mui/material';
@@ -13,6 +13,7 @@ const Tasks = () => {
   const tasksLoading = useAppSelector((state) => state.tasks.fetchLoading)
   const formLoading = useAppSelector((state) => state.tasks.formLoading)
   const statusLoading = useAppSelector((state) => state.tasks.statusLoading)
+  const deleteLoading = useAppSelector((state) => state.tasks.deleteLoading)
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -28,7 +29,7 @@ const Tasks = () => {
   };
 
   const deleteTask = (task: Task) => {
-    dispatch(statusFetch(task));
+    dispatch(deleteFetch(task));
   }
 
   let tasksList: ReactNode = <Spinner/>;
@@ -44,6 +45,7 @@ const Tasks = () => {
           onChangeStatus={() => ChangeStatus(task)}
           statusLoader={statusLoading}
           onDelete={() => deleteTask(task)}
+          deleteLoading={deleteLoading}
         />
       ));
       } else {
@@ -54,7 +56,8 @@ const Tasks = () => {
   return (
     <Container>
      <TaskForm loading={formLoading} onSubmitAction={onSubmitAction}/>
-      <Typography sx={{textAlign: 'center', my: 3}} variant='h4'>
+      <hr/>
+      <Typography sx={{textAlign: 'center', my: 5}} variant='h4'>
         Todo list
       </Typography>
       {tasksList}

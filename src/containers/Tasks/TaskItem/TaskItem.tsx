@@ -6,9 +6,10 @@ interface Props {
   onChangeStatus: () => void;
   statusLoader: boolean;
   onDelete: () => void;
+  deleteLoading: boolean;
 }
 
-const TaskItem: React.FC<Props> = ({title, status, onChangeStatus, onDelete}) => {
+const TaskItem: React.FC<Props> = ({title, status, onChangeStatus, onDelete, deleteLoading}) => {
   return (
     <Card
       sx={{
@@ -26,11 +27,10 @@ const TaskItem: React.FC<Props> = ({title, status, onChangeStatus, onDelete}) =>
            <Typography variant="body1" color="textSecondary">
              {title}
            </Typography>
-          <Typography variant="body2" color={status ? 'textSecondary' : 'textPrimary'}>
+          <Typography variant="body2" color={status ? 'success' : 'warning'}>
             {status ? 'done' : 'in progress'}
           </Typography>
       </CardContent>
-
       <Grid>
         <Button
           size="small"
@@ -38,11 +38,11 @@ const TaskItem: React.FC<Props> = ({title, status, onChangeStatus, onDelete}) =>
           onClick={onDelete}
           loadingPosition="start"
           variant="contained"
+          disabled={deleteLoading}
         >
           Delete
         </Button>
       </Grid>
-
     </Card>
   );
 };

@@ -23,9 +23,7 @@ export const addTask = createAsyncThunk(
   "tasks/onSubmit",
   async (newTask: TaskApi) => {
     const response = await axiosApi.post<Task>('/tasks.json', newTask);
-    console.log(response.data.name)
-    toast.success('Meal was added Successfully!');
-
+    toast.success('Task was added Successfully!');
     return { ...newTask, id: response.data.name}
   }
 )
@@ -33,13 +31,19 @@ export const addTask = createAsyncThunk(
 export const statusFetch = createAsyncThunk(
   "tasks/statusFetch",
   async (newTask: Task) => {
-      await axiosApi.put(`tasks/${newTask.id}.json`, {...newTask, status: !newTask.status})
+      await axiosApi.put(`tasks/${newTask.id}.json`, {...newTask, status: !newTask.status});
       return {...newTask, status: !newTask.status}
   }
 )
 
-const deleteFetch = async (task: Task) => {
-  if (window.confirm("Are you sure you want to delete this dish?")) {
-    await axiosApi.delete(`dishes/${task.id}.json`);
-  }
-};
+export const deleteFetch = createAsyncThunk(
+  "tasks/deleteFetch",
+    async (task: Task) => {
+      if (window.confirm("Are you sure you want to delete this task?")) {
+        await axiosApi.delete(`tasks/${task.id}.json`);
+        toast.success('Task was deleted Successfully!');
+        return task
+      }
+    }
+)
+;

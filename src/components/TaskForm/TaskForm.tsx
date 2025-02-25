@@ -19,6 +19,7 @@ const TaskForm: React.FC<Props> = ({onSubmitAction, loading = false}) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmitAction({...form, status: false});
+    setForm(initialState);
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,12 +28,12 @@ const TaskForm: React.FC<Props> = ({onSubmitAction, loading = false}) => {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <Typography variant="h4" sx={{flexGrow: 1, textAlign: 'center'}}>
+    <form onSubmit={onSubmit} style={{marginBottom: '3rem'}}>
+      <Typography variant="h4" sx={{flexGrow: 1, textAlign: 'center', mt: 3}}>
         Add task
       </Typography>
 
-      <Grid container spacing={2} sx={{mx: 'auto', width: '50%', mt: 4}}>
+      <Grid container spacing={2} sx={{mx: 'auto', width: '50%', mt: 3}}>
 
         <Grid xs={12}>
           <TextField
@@ -52,7 +53,8 @@ const TaskForm: React.FC<Props> = ({onSubmitAction, loading = false}) => {
           sx={{width: '100%'}}
           disabled={loading}
         >
-          {loading ? <ButtonSpinner/> : 'Add Task'}
+          {loading ? <ButtonSpinner/> : null}
+          <span>Add Task</span>
         </Button>
       </Grid>
     </form>

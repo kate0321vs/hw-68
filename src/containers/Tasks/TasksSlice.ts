@@ -1,21 +1,21 @@
-import { Task, TaskApi } from '../../types';
+import { Task } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTasks, addTask, statusFetch } from './TasksThunk.ts';
+import { fetchTasks, addTask, statusFetch, deleteFetch } from './TasksThunk.ts';
 
 interface TasksState {
   tasks: Task[];
-  form: TaskApi;
   fetchLoading: boolean;
   formLoading: boolean;
-  statusLoading: boolean
+  statusLoading: boolean;
+  deleteLoading: boolean
 }
 
 const initialState: TasksState = {
   tasks: [],
   fetchLoading: false,
   formLoading: false,
-  form: { title: '', status: false },
-  statusLoading: false
+  statusLoading: false,
+  deleteLoading: false
 };
 
 const tasksSlice = createSlice({
@@ -29,7 +29,7 @@ const tasksSlice = createSlice({
 
     builder.addCase(fetchTasks.fulfilled, (state, action) => {
       state.fetchLoading = false;
-      state.tasks = action.payload;
+      state.tasks = action.payload.reverse();
     });
 
     builder.addCase(fetchTasks.rejected, (state) => {
@@ -43,7 +43,7 @@ const tasksSlice = createSlice({
     builder.addCase(addTask.fulfilled, (state, action) => {
       state.formLoading = false;
       state.tasks = [action.payload, ...state.tasks];
-      state.form = {...state.form, title: ''};
+
     });
 
     builder.addCase(addTask.rejected, (state) => {
@@ -65,6 +65,18 @@ const tasksSlice = createSlice({
       state.statusLoading = false;
     });
 
+    builder.addCase(deleteFetch.pending, (state) => {
+      state.deleteLoading = true;
+    });
+
+    builder.addCase(deleteFetch.fulfilled, (state, action) => {
+      state.deleteLoading = false;
+        state.tasks = state.tasks.filter(task => task.id !== action.payload.id)
+    });
+
+    builder.addCase(deleteFetch.rejected, (state) => {
+      state.deleteLoading = false;
+    })
   },
 });
 
